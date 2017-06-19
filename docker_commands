@@ -1,0 +1,43 @@
+1) start docker machine:
+docker-compose -f docker-compose.dev.yml up
+
+
+2) connect to default docker machine:
+eval $(docker-machine env default)
+
+3) create an docker image with the name prms-veg
+docker build -t prms-veg .
+
+4) run a container with the image prms-veg, the port number is 5010:
+docker run --name prms-veg-container -e APP_PORT=5010 -p 5010:5010  prms-veg
+
+5) stop all containers
+docker stop $(docker ps -a -q)
+
+6) remove all containers
+docker rm $(docker ps -a -q)
+
+7) remove docker image
+docker rmi the_image_name
+
+8) list all the docker image
+docker ps -a
+
+9)
+docker run --name prms-veg-container -e APP_PORT=5010 -p 5010:5010 -v /Users/rwu/Desktop/prms-vegetation-scenarios/app:/var/www/prms-veg/app --restart=always -d prms-veg
+
+10) start mongodb
+docker run --name mongo -d mongo
+
+11) start container with username and password
+docker run --name prms -e APP_PORT=5010 -e APP_USERNAME='a@b.com' -e APP_PASSWORD='123456'  -e MONGODB_HOST=mongo  -p 5010:5010 -v /Users/rwu/Desktop/prms-vegetation-scenarios/app:/var/www/prms-veg/app --link mongo:mongo  prms-veg python manage.py runserver -h 0.0.0.0 -p 5010 --threaded
+
+12) go inside docker container
+docker exec -it prms-veg-container /bin/bash
+
+13) list all docker machine:
+docker-machine ls
+
+authorization JWT "API_Key"
+
+https://github.com/VirtualWatershed/vw-deploy/tree/master/v1.0/development
